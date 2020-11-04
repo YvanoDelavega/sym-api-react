@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource
+ * @uniqueEntity("email", message ="Un autre utilisateur s'est déjà inscrit avec cette adresse email, merci d'en choisir une autre")
  */
 class User implements UserInterface
 {
@@ -17,11 +23,16 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"customers_read", "invoices_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="le mail du client est obligatoire")     
+     * @Assert\Email(message="le format de l'email doit etre valide")
+     * @Assert\Length(min=5, minMessage="au moins 5 car", max=255, maxMessage="pas plus de 255")
      */
     private $email;
 
@@ -33,16 +44,24 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="le mot de passe du client est obligatoire")
+     * @Assert\Length(min=3, minMessage="au moins 3 car", max=20, maxMessage="pas plus de 255")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="le prénom du client est obligatoire")
+     * @Assert\Length(min=3, minMessage="au moins 3 car", max=255, maxMessage="pas plus de 20")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"invoices_read", "customers_read", "invoices_subresource"})
+     * @Assert\NotBlank(message="le nom du client est obligatoire")
+     * @Assert\Length(min=3, minMessage="au moins 3 car", max=255, maxMessage="pas plus de 255")
      */
     private $lastName;
 
