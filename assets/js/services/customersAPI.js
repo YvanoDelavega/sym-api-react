@@ -10,7 +10,7 @@ function findAll() {
 
 function deleteCustomer(id) {
   return axios
-    .delete("https://localhost:8000/api/customerls/" + id)
+    .delete("https://localhost:8000/api/customers/" + id)
     .then((reponse) => reponse.data["hydra:member"]);
   // .catch((error) => console.log("erreur delete :" + error.response));
 }

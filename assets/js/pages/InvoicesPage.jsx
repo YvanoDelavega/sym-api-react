@@ -1,6 +1,8 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import TableLoader from "../components/loaders/TableLoader";
 import Pagination from "../components/Pagination";
 import InvoicesAPI from "../services/invoicesAPI";
 //import 'moment/min/moment-with-locales'
@@ -9,6 +11,7 @@ export const InvoicesPage = (params) => {
   const [invoices, setInvoices] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const STATUS_CLASSE = {
     PAID: "success",
@@ -26,8 +29,10 @@ export const InvoicesPage = (params) => {
     try {
       const data = await InvoicesAPI.findAll();
       setInvoices(data);
+      setLoading(false);
     } catch (error) {
       console.log(error.response);
+      toast.error("Une erreur est survenue lors du chargement des factures");
     }
   };
 
@@ -42,9 +47,11 @@ export const InvoicesPage = (params) => {
 
     try {
       await InvoicesAPI.delete(id);
+      toast.success("La facture a bien été supprimée");
     } catch (error) {
       console.log(error.response);
       setInvoices(saveInvoices);
+      toast.error("Une erreur est survenue");
     }
   };
 
@@ -123,43 +130,47 @@ export const InvoicesPage = (params) => {
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          {paginatedInvoices.map((invoice) => (
-            <tr key={invoice.id}>
-              <td>{invoice.chrono}</td>
-              <td>
-                <Link to={"/customers/" + invoice.customer.id}>
-                  {invoice.customer.firstName} {invoice.customer.lastName}
-                </Link>
-              </td>
-              <td>{formatDate(invoice.sentAt)}</td>
-              <td className="text-center">
-                <span
-                  className={"badge badge-" + STATUS_CLASSE[invoice.status]}
-                >
-                  {STATUS_NAME[invoice.status]}
-                </span>
-              </td>
-              <td className="text-center">{invoice.amount} €</td>
-              <td className="text-center">
-                <Link
-                  to={"/invoices/" + invoice.id}
-                  className="btn btn-sm btn-primary mr-1"
-                >
-                  Editer
-                </Link>
-                <button
-                  onClick={() => handleDelete(invoice.id)}
-                  // disabled={invoice.invoices.length > 0}
-                  className="btn btn-sm btn-danger"
-                >
-                  Supprimer
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+
+        {!loading && (
+          <tbody>
+            {paginatedInvoices.map((invoice) => (
+              <tr key={invoice.id}>
+                <td>{invoice.chrono}</td>
+                <td>
+                  <Link to={"/customers/" + invoice.customer.id}>
+                    {invoice.customer.firstName} {invoice.customer.lastName}
+                  </Link>
+                </td>
+                <td>{formatDate(invoice.sentAt)}</td>
+                <td className="text-center">
+                  <span
+                    className={"badge badge-" + STATUS_CLASSE[invoice.status]}
+                  >
+                    {STATUS_NAME[invoice.status]}
+                  </span>
+                </td>
+                <td className="text-center">{invoice.amount} €</td>
+                <td className="text-center">
+                  <Link
+                    to={"/invoices/" + invoice.id}
+                    className="btn btn-sm btn-primary mr-1"
+                  >
+                    Editer
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(invoice.id)}
+                    // disabled={invoice.invoices.length > 0}
+                    className="btn btn-sm btn-danger"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
+      {loading && <TableLoader />}
     </>
   );
 };

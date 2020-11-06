@@ -3,6 +3,7 @@ import AuthAPI from "../services/authAPI";
 
 import AuthContext from "../context/AuthContext";
 import Field from "../components/forms/Field";
+import { toast } from "react-toastify";
 
 export const LoginPage = (props) => {
   const [credentials, setCredentials] = useState({
@@ -34,11 +35,13 @@ export const LoginPage = (props) => {
       setError("");
       //  props.onLogin(true);
       setIsAuthenticated(true);
+      toast.success("Vous êtes désormais connecté");
       props.history.replace("/customers");
     } catch (error) {
       setError(
         "Les informations de connexion sont invalides ou le compte n'existe pas"
       );
+      toast.error("Une erreur est survenue");
     }
   };
 

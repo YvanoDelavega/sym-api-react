@@ -12,6 +12,8 @@ import { InvoicePage } from "./js/pages/InvoicePage";
 import { LoginPage } from "./js/pages/LoginPage";
 import { RegisterPage } from "./js/pages/RegisterPage";
 import AuthAPI from "./js/services/authAPI";
+import "react-toastify/dist/ReactToastify.css";
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -20,6 +22,7 @@ import AuthAPI from "./js/services/authAPI";
  */
 // any CSS you import will output into a single css file (app.css in this case)
 import "./styles/app.css";
+import { toast, ToastContainer } from "react-toastify";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -92,6 +95,7 @@ const App = () => {
           </Switch>
         </main>
       </HashRouter>
+      <ToastContainer position={toast.POSITION.BOTTOM_LEFT}/>
     </AuthContext.Provider>
   );
 };

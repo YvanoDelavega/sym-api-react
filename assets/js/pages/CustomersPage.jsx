@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import TableLoader from "../components/loaders/TableLoader";
 import Pagination from "../components/Pagination";
 import CustomersAPI from "../services/customersAPI";
 
@@ -7,13 +9,16 @@ export const CustomersPage = (params) => {
   const [customers, setCustomers] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchCustomers = async () => {
     try {
       const data = await CustomersAPI.findAll();
       setCustomers(data);
+      setLoading(false);
     } catch (error) {
       console.log(error.response);
+      toast.error("Une erreur est survenue");
     }
   };
 
@@ -28,9 +33,11 @@ export const CustomersPage = (params) => {
 
     try {
       await CustomersAPI.delete(id);
+      toast.success("Le client a bien été supprimée");
     } catch (error) {
       console.log(error.response);
       setCustomers(saveCustomers);
+      toast.error("Une erreur est survenue lors de la suppression");
     }
 
     //     CustomersAPI.delete(id)
@@ -79,7 +86,9 @@ export const CustomersPage = (params) => {
     <>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Liste des clients</h1>
-        <Link to='/customers/new' className="btn btn-primary">Créer un client</Link>
+        <Link to="/customers/new" className="btn btn-primary">
+          Créer un client
+        </Link>
       </div>
 
       <div className="form-group">
@@ -153,38 +162,44 @@ export const CustomersPage = (params) => {
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          {paginatedCustormers.map((customer) => (
-            <tr key={customer.id}>
-              <td>{customer.id}</td>
-              <td>
-                {customer.firstName} {customer.lastName}
-              </td>
-              <td>
-                <Link to={("/customers/" + customer.id)}>{customer.email}</Link>
-              </td>
-              <td>{customer.company}</td>
-              <td className="text-center">
-                <span className="badge badge-primary">
-                  {customer.invoices.length}
-                </span>
-              </td>
-              <td className="text-center">
-                {customer.totalAmount.toLocaleString()} €
-              </td>
-              <td className="text-center">
-                <button
-                  onClick={() => handleDelete(customer.id)}
-                  disabled={customer.invoices.length > 0}
-                  className="btn btn-sm btn-danger"
-                >
-                  Supprimer
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+
+        {!loading && (
+          <tbody>
+            {paginatedCustormers.map((customer) => (
+              <tr key={customer.id}>
+                <td>{customer.id}</td>
+                <td>
+                  <Link to={"/customers/" + customer.id}>
+                    {customer.firstName} {customer.lastName}
+                  </Link>
+                </td>
+                <td>
+                  <Link to={"/customers/" + customer.id}>{customer.email}</Link>
+                </td>
+                <td>{customer.company}</td>
+                <td className="text-center">
+                  <span className="badge badge-primary">
+                    {customer.invoices.length}
+                  </span>
+                </td>
+                <td className="text-center">
+                  {customer.totalAmount.toLocaleString()} €
+                </td>
+                <td className="text-center">
+                  <button
+                    onClick={() => handleDelete(customer.id)}
+                    disabled={customer.invoices.length > 0}
+                    className="btn btn-sm btn-danger"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
+      {loading && <TableLoader />}
     </>
   );
 };

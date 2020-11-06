@@ -43,12 +43,14 @@ export const RegisterPage = ({ history }) => {
       submitErrors.passwordConfirm =
         "Les 2 mots de passes ne sont pas identiques";
       setErrors(submitErrors);
+      toast.success("Il y a des erreurs dans votre formulaire...");
       return;
     } 
 
     try {
       await usersAPI.register(user);
       setErrors({}); // a faire avant de changer de page sinon il faudra raffraichir la page alors qu'elle ne sera plus affichée
+      toast.success("Vous êtes désormais inscrit, vous pouvez vous connecter");
       history.replace("/login");
     } catch (error) {
       console.log(error.response);
@@ -65,6 +67,7 @@ export const RegisterPage = ({ history }) => {
           }
         });
         setErrors(submitErrors);
+        toast.success("Il y a des erreurs dans votre formulaire...");
       }
     }
 
