@@ -6,6 +6,7 @@ import Field from "../components/forms/Field";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import usersAPI from "../services/usersAPI";
+import { toast } from "react-toastify";
 
 export const RegisterPage = ({ history }) => {
   const [user, setUser] = useState({

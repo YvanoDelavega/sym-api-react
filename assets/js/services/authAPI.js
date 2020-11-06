@@ -1,12 +1,13 @@
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
+import { LOGIN_API } from "./config";
 
 /**
  * requete http d'authentification et stockage du token dans le storage et sur axios
  * @param {*} credentials 
  */
 function authenticate(credentials) {
-  return Axios.post("https://localhost:8000/api/login_check", credentials)
+  return Axios.post(LOGIN_API, credentials)
     .then((response) => response.data.token)
     .then((token) => {
       window.localStorage.setItem("authToken", token);
@@ -16,10 +17,6 @@ function authenticate(credentials) {
       return true;
     });
 }
-
-// function register(user) {
-//   return Axios("https://localhost:8000/api/login_check");
-// }
 
 /**
  * déconnexion

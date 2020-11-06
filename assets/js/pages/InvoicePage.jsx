@@ -90,11 +90,7 @@ export const InvoicePage = ({ match, history }) => {
         console.log(invoice);
         const response = await invoicesAPI.update(id, invoice);
         toast.success("La facture a bien été modifiée");
-        // const response = await Axios.put(
-        //   "https://localhost:8000/api/invoices/" + id,
-        //   { ...invoice, customer: `/api/customers/${invoice.customer}` }
-        // );
-        console.log(response);
+         console.log(response);
         // creation
       } else {
         console.log("POST");
@@ -105,10 +101,6 @@ export const InvoicePage = ({ match, history }) => {
         };
         console.log(modif);
 
-        /*const response = await Axios.post(
-                "https://localhost:8000/api/invoices",
-                { ...invoice, customer: `/api/customers/${invoice.customer}` }
-                );*/
         const response = await invoicesAPI.create(invoice);
         console.log("reponse");
         console.log(response);

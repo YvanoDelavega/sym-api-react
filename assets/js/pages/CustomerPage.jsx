@@ -69,7 +69,7 @@ const CustomerPage = ({ match, history }) => {
         console.log(response.data);
         toast.success("Le client a bien été modifié");
     } else {
-        await Axios.post("https://localhost:8000/api/customers", customer);
+        await customersAPI.create(customer);
         toast.success("Le client a bien été créé");
         history.replace("/customers");
       }
