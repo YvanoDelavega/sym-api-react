@@ -24,7 +24,6 @@ export const InvoicesPage = (params) => {
   const fetchInvoices = async () => {
     try {
       const data = await InvoicesAPI.findAll();
-      // console.log(data.length);
       setInvoices(data);
     } catch (error) {
       console.log(error.response);

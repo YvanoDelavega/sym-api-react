@@ -19,10 +19,6 @@ export const CustomersPage = (params) => {
   // va chercher les customers au chargement
   useEffect(() => {
     fetchCustomers();
-
-    // CustomersAPI.findAll()
-    //   .then((data) => setCustomers(data))
-    //   .catch((error) => console.log(error.response));
   }, []);
 
   const handleDelete = async (id) => {

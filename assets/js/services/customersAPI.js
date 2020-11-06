@@ -4,7 +4,8 @@ function findAll() {
      return axios
        .get("https://localhost:8000/api/customers")
        .then((reponse) => reponse.data["hydra:member"])
-       .catch((error) => console.log(error.response));
+       // ne pas faire ca ici sinon ca va faire planter la page qui appelle, s'il y a une erreur
+     //  .catch((error) => console.log(error.response));
 }
 
 function deleteCustomer(id) {

@@ -77,41 +77,42 @@ export const CustomersPageWithPagination = (params) => {
         </thead>
         <tbody>
 
-{loading && (
-  <tr>
-    <td>Chargement...</td>
-  </tr>
-)}
-
-          {!loading && customers.map((customer) => (
-            <tr key={customer.id}>
-              <td>{customer.id}</td>
-              <td>
-                {customer.firstName} {customer.lastName}
-              </td>
-              <td>
-                <a href="#">{customer.email}</a>
-              </td>
-              <td>{customer.company}</td>
-              <td className="text-center">
-                <span className="badge badge-primary">
-                  {customer.invoices.length}
-                </span>
-              </td>
-              <td className="text-center">
-                {customer.totalAmount.toLocaleString()} €
-              </td>
-              <td className="text-center">
-                <button
-                  onClick={() => handleDelete(customer.id)}
-                  disabled={customer.invoices.length > 0}
-                  className="btn btn-sm btn-danger"
-                >
-                  Supprimer
-                </button>
-              </td>
+          {loading && (
+            <tr>
+              <td>Chargement...</td>
             </tr>
-          ))}
+          )}
+
+          {!loading &&
+            customers.map((customer) => (
+              <tr key={customer.id}>
+                <td>{customer.id}</td>
+                <td>
+                  {customer.firstName} {customer.lastName}
+                </td>
+                <td>
+                  <a href="#">{customer.email}</a>
+                </td>
+                <td>{customer.company}</td>
+                <td className="text-center">
+                  <span className="badge badge-primary">
+                    {customer.invoices.length}
+                  </span>
+                </td>
+                <td className="text-center">
+                  {customer.totalAmount.toLocaleString()} €
+                </td>
+                <td className="text-center">
+                  <button
+                    onClick={() => handleDelete(customer.id)}
+                    disabled={customer.invoices.length > 0}
+                    className="btn btn-sm btn-danger"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </>
