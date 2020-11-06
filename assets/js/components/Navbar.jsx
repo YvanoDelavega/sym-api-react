@@ -42,7 +42,7 @@ const { isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="invoices">
+            <NavLink className="nav-link" to="/invoices">
               Factures
             </NavLink>
           </li>

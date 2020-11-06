@@ -17,6 +17,10 @@ function authenticate(credentials) {
     });
 }
 
+// function register(user) {
+//   return Axios("https://localhost:8000/api/login_check");
+// }
+
 /**
  * déconnexion
  */

@@ -1,5 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import InvoicesAPI from "../services/invoicesAPI";
 //import 'moment/min/moment-with-locales'
@@ -85,7 +86,12 @@ export const InvoicesPage = (params) => {
 
   return (
     <>
-      <h1>Liste des factures</h1>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h1>Liste des factures</h1>
+        <Link to="/invoices/new" className="btn btn-primary">
+          Créer une facture
+        </Link>
+      </div>
 
       <div className="form-group">
         <input
@@ -122,9 +128,9 @@ export const InvoicesPage = (params) => {
             <tr key={invoice.id}>
               <td>{invoice.chrono}</td>
               <td>
-                <a href="">
+                <Link to={"/customers/" + invoice.customer.id}>
                   {invoice.customer.firstName} {invoice.customer.lastName}
-                </a>
+                </Link>
               </td>
               <td>{formatDate(invoice.sentAt)}</td>
               <td className="text-center">
@@ -136,13 +142,12 @@ export const InvoicesPage = (params) => {
               </td>
               <td className="text-center">{invoice.amount} €</td>
               <td className="text-center">
-                <button
-                  onClick={() => handleDelete(invoice.id)}
-                  // disabled={invoice.invoices.length > 0}
+                <Link
+                  to={"/invoices/" + invoice.id}
                   className="btn btn-sm btn-primary mr-1"
                 >
                   Editer
-                </button>
+                </Link>
                 <button
                   onClick={() => handleDelete(invoice.id)}
                   // disabled={invoice.invoices.length > 0}

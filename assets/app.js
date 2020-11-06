@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import {
-  HashRouter,
-  Route, Switch,
-  withRouter
-} from "react-router-dom";
+import { HashRouter, Route, Switch, withRouter } from "react-router-dom";
 import { Navbar } from "./js/components/Navbar";
 import PrivateRoute from "./js/components/PrivateRoute";
 import AuthContext from "./js/context/AuthContext";
+import CustomerPage from "./js/pages/CustomerPage";
 import { CustomersPage } from "./js/pages/CustomersPage";
 import { HomePage } from "./js/pages/HomePage";
 import { InvoicesPage } from "./js/pages/InvoicesPage";
+import { InvoicePage } from "./js/pages/InvoicePage";
 import { LoginPage } from "./js/pages/LoginPage";
+import { RegisterPage } from "./js/pages/RegisterPage";
 import AuthAPI from "./js/services/authAPI";
 /*
  * Welcome to your app's main JavaScript file!
@@ -21,7 +20,6 @@ import AuthAPI from "./js/services/authAPI";
  */
 // any CSS you import will output into a single css file (app.css in this case)
 import "./styles/app.css";
-
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -38,8 +36,6 @@ const App = () => {
   const NavbarWithRouter = withRouter(Navbar);
 
   console.log("isAuthenticated " + isAuthenticated);
-
-
 
   // const contextValue ={
   //   isAuthenticated:isAuthenticated,
@@ -62,6 +58,7 @@ const App = () => {
         <main className="container pt-5">
           <Switch>
             <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
 
             {/* <Route
               path="/login"
@@ -73,17 +70,10 @@ const App = () => {
                 />
               )}
             /> */}
-
-            <PrivateRoute
-              path="/customers"
-              // isAuthenticated={isAuthenticated}
-              component={CustomersPage}
-            />
-            <PrivateRoute
-              path="/invoices"
-              //  isAuthenticated={isAuthenticated}
-              component={InvoicesPage}
-            />
+            <PrivateRoute path="/invoices/:id" component={InvoicePage} />
+            <PrivateRoute path="/invoices" component={InvoicesPage} />
+            <PrivateRoute path="/customers/:id" component={CustomerPage} />
+            <PrivateRoute path="/customers" component={CustomersPage} />
 
             {/* <Route path="/customers" component={CustomersPage} /> */}
 
