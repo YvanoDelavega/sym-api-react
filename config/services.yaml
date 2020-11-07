@@ -32,8 +32,8 @@ services:
     # please note that last definitions always *replace* previous ones
     Doctrine\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
 
-    App\Serializer\PatchedDateTimeNormalizer:
-        tags: [serializer.normalizer]
+    #App\Serializer\PatchedDateTimeNormalizer:
+    #    tags: [serializer.normalizer]
     App\Events\JwtCreatedSubscriber:
         tags:
             - {
